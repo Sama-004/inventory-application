@@ -175,7 +175,7 @@ async function createPowerSupplies() {
   console.log("PowerSupplies added");
 }
 
-async function createRAMs() {
+async function createRams() {
   // Test data creation for RAM
   console.log("Adding RAMs");
   const rams = [
