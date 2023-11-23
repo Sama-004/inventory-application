@@ -11,7 +11,9 @@ const ram_controller = require("../controllers/ramController");
 /// CPU ROUTES ///
 
 // GET catalog home page.
-router.get("/", cpu_controller.index);
+router.get("/", (req, res) => {
+  res.send("Welcome to the PC Parts Catalog");
+});
 
 // GET request for creating a CPU. NOTE This must come before routes that display CPU (uses id).
 router.get("/cpu/create", cpu_controller.cpu_create_get);
