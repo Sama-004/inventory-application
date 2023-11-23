@@ -1,5 +1,31 @@
 const Cpu = require("../models/cpu");
 const asyncHandler = require("express-async-handler");
+const CPU = require("../models/cpu");
+const GraphicsCard = require("../models/graphicscard");
+const Motherboard = require("../models/motherboard");
+const PowerSupply = require("../models/powersupply");
+const RAM = require("../models/ram");
+
+exports.index = asyncHandler(async (req, res, next) => {
+  // Get details of books, book instances, authors and genre counts (in parallel)
+  const [numCpus, numGraphiccards, numMotherboards, numPowersupplies, numRams] =
+    await Promise.all([
+      CPU.countDocuments({}).exec(),
+      GraphicsCard.countDocuments({}).exec(),
+      Motherboard.countDocuments({}).exec(),
+      PowerSupply.countDocuments({}).exec(),
+      RAM.countDocuments({}).exec(),
+    ]);
+
+  res.render("index", {
+    title: "Pc Parts Catalog Home",
+    cpu_count: numCpus,
+    gpu_count: numGraphiccards,
+    motherboard_count: numMotherboards,
+    power_supply_count: numPowersupplies,
+    ram_count: numRams,
+  });
+});
 
 // Display list of all CPUs.
 exports.cpu_list = asyncHandler(async (req, res, next) => {
