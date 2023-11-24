@@ -3,7 +3,15 @@ const asyncHandler = require("express-async-handler");
 
 // Display list of all PowerSupply.
 exports.powersupply_list = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: PowerSupply list");
+  const allPowerSupplies = await PowerSupply.find(
+    {},
+    "name brand price"
+  ).exec();
+
+  res.render("powersupply_list", {
+    title: "Power Supply List",
+    powersupply_list: allPowerSupplies,
+  });
 });
 
 // Display detail page for a specific PowerSupply.

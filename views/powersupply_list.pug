@@ -1,0 +1,12 @@
+extends layout
+
+block content
+  h1= title
+
+  ul
+    each powersupply in powersupply_list
+      li
+        a(href=powersupply.url) #{powersupply.name} (#{powersupply.brand}) - ₹#{powersupply.price}
+
+    else
+      li There are no power supplies.
