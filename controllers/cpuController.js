@@ -28,7 +28,13 @@ exports.index = asyncHandler(async (req, res, next) => {
 
 // Display list of all CPUs.
 exports.cpu_list = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: CPU list");
+  const allCpu = await cpu
+    .find({}, "brand name")
+    .sort({ brand: 1 })
+    .populate("name")
+    .exec();
+
+  res.render("cpu_list", { title: "Cpu List", cpu_list: allCpu });
 });
 
 // Display detail page for a specific CPU.

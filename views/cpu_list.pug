@@ -1,0 +1,13 @@
+extends layout
+
+block content
+  h1= title
+
+  ul
+    each cpu_item in cpu_list
+      li
+        a(href=cpu_item.url) #{cpu_item.name}
+        |  (#{cpu_item.brand})
+
+    else
+      li There are no CPUs.
