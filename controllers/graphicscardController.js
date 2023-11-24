@@ -1,9 +1,16 @@
 const GraphicsCard = require("../models/graphicscard");
 const asyncHandler = require("express-async-handler");
 
-// Display list of all gpu.
+// Display list of all BookInstances.
 exports.graphicscard_list = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: Graphics Card list");
+  const allGraphicsCards = await GraphicsCard.find(
+    {},
+    "name brand price"
+  ).exec();
+  res.render("graphicscard_list", {
+    title: "Graphics Card List",
+    graphicscard_list: allGraphicsCards,
+  });
 });
 
 // Display detail page for a specific gpu.
