@@ -3,7 +3,11 @@ const asyncHandler = require("express-async-handler");
 
 // Display list of all Motherboard.
 exports.motherboard_list = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: Motherboard list");
+  const allMotherboards = await Motherboard.find({}, "name brand price").exec();
+  res.render("motherboard_list", {
+    title: "Motherboard List",
+    motherboard_list: allMotherboards,
+  });
 });
 
 // Display detail page for a specific Motherboard.

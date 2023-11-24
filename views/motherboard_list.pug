@@ -1,0 +1,12 @@
+extends layout
+
+block content
+  h1= title
+
+  ul
+    each motherboard in motherboard_list
+      li
+        a(href=motherboard.url) #{motherboard.name} (#{motherboard.brand}) - ₹#{motherboard.price}
+
+    else
+      li There are no motherboards.
