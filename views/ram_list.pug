@@ -1,0 +1,13 @@
+extends layout
+
+block content
+  h1= title
+
+  ul
+    each ram in ram_list
+      li
+        a(href=ram.url)= ram.name
+        | (#{ram.brand}) #{ram.capacity} #{ram.speed} - ₹#{ram.price}
+
+    else
+      li There are no RAMs.

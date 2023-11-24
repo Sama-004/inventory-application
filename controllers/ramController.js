@@ -3,7 +3,11 @@ const asyncHandler = require("express-async-handler");
 
 // Display list of all Rams.
 exports.ram_list = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: Ram list");
+  const allRams = await Ram.find({}, "name brand capacity speed price").exec();
+  res.render("ram_list", {
+    title: "Ram List",
+    ram_list: allRams,
+  });
 });
 
 // Display detail page for a specific Ram.
