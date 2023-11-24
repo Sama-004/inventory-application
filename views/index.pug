@@ -2,4 +2,15 @@ extends layout
 
 block content
   h1= title
-  p Welcome to #{title}
+  p Welcome to #[em Inventory], a very basic app made with express.
+
+  h1 Dynamic content
+
+  p The Shop has the following parts:
+
+  ul
+    li #[strong Cpus:] !{cpu_count}
+    li #[strong Gpus:] !{gpu_count}
+    li #[strong Motherboards:] !{motherboard_count}
+    li #[strong Power Supplies:] !{power_supply_count}
+    li #[strong Rams:] !{ram_count}

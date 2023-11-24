@@ -1,20 +1,19 @@
-const Cpu = require("../models/cpu");
 const asyncHandler = require("express-async-handler");
-const CPU = require("../models/cpu");
+const cpu = require("../models/cpu");
 const GraphicsCard = require("../models/graphicscard");
 const Motherboard = require("../models/motherboard");
 const PowerSupply = require("../models/powersupply");
-const RAM = require("../models/ram");
+const ram = require("../models/ram");
 
 exports.index = asyncHandler(async (req, res, next) => {
   // Get details of books, book instances, authors and genre counts (in parallel)
   const [numCpus, numGraphiccards, numMotherboards, numPowersupplies, numRams] =
     await Promise.all([
-      CPU.countDocuments({}).exec(),
+      cpu.countDocuments({}).exec(),
       GraphicsCard.countDocuments({}).exec(),
       Motherboard.countDocuments({}).exec(),
       PowerSupply.countDocuments({}).exec(),
-      RAM.countDocuments({}).exec(),
+      ram.countDocuments({}).exec(),
     ]);
 
   res.render("index", {

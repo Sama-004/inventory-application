@@ -8,9 +8,9 @@ console.log(
 const userArgs = process.argv.slice(2);
 
 const CPU = require("./models/cpu");
-const GraphicsCard = require("./models/graphicsCard");
+const GraphicsCard = require("./models/graphicscard");
 const Motherboard = require("./models/motherboard");
-const PowerSupply = require("./models/powerSupply");
+const PowerSupply = require("./models/powersupply");
 const RAM = require("./models/ram");
 
 // const genres = [];
