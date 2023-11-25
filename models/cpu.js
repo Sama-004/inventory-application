@@ -15,7 +15,7 @@ const cpuSchema = new Schema({
 
 // Virtual for CPU's URL
 cpuSchema.virtual("url").get(function () {
-  return `/products/cpu/${this._id}`;
+  return `/catalog/cpu/${this._id}`;
 });
 
 // Export model

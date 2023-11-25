@@ -14,7 +14,7 @@ const graphicsCardSchema = new Schema({
 
 // Virtual for GPU's URL
 graphicsCardSchema.virtual("url").get(function () {
-  return `/products/graphics-card/${this._id}`;
+  return `/catalog/graphicscard/${this._id}`;
 });
 
 // Export model

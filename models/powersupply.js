@@ -14,7 +14,7 @@ const powerSupplySchema = new Schema({
 
 // Virtual for psu's URL
 powerSupplySchema.virtual("url").get(function () {
-  return `/products/power-supply/${this._id}`;
+  return `/catalog/powersupply/${this._id}`;
 });
 
 // Export model

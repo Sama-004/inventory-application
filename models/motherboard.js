@@ -14,7 +14,7 @@ const motherboardSchema = new Schema({
 
 // Virtual for motherboard's URL
 motherboardSchema.virtual("url").get(function () {
-  return `/products/motherboard/${this._id}`;
+  return `/catalog/motherboard/${this._id}`;
 });
 
 // Export model

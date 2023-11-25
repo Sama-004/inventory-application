@@ -14,7 +14,7 @@ const ramSchema = new Schema({
 
 // Virtual for RAM's URL
 ramSchema.virtual("url").get(function () {
-  return `/products/ram/${this._id}`;
+  return `/catalog/ram/${this._id}`;
 });
 
 // Export model
