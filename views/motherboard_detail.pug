@@ -1,0 +1,15 @@
+extends layout
+
+block content
+  h1= title
+
+  if mb
+    div
+      h2 Motherboard Specs
+      p Name: #{mb.name}
+      p Brand: #{mb.brand}
+      p Socket Type: #{mb.socketType}
+      p Form Factor: #{mb.formFactor}
+      p Price: #{mb.price}      
+  else
+    p Motherboard not found

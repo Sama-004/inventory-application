@@ -12,7 +12,18 @@ exports.motherboard_list = asyncHandler(async (req, res, next) => {
 
 // Display detail page for a specific Motherboard.
 exports.motherboard_detail = asyncHandler(async (req, res, next) => {
-  res.send(`NOT IMPLEMENTED: Motherboard detail: ${req.params.id}`);
+  const mbId = req.params.id;
+  try {
+    const mb = await Motherboard.findById(mbId);
+    if (!mb) {
+      return res.status(404).send("Motherboard not found");
+    }
+    res.render("motherboard_detail", {
+      mb,
+    });
+  } catch (err) {
+    res.status(500).send("Internal Server Error");
+  }
 });
 
 // Display Motherboard create form on GET.
