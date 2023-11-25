@@ -39,7 +39,22 @@ exports.cpu_list = asyncHandler(async (req, res, next) => {
 
 // Display detail page for a specific CPU.
 exports.cpu_detail = asyncHandler(async (req, res, next) => {
-  res.send(`NOT IMPLEMENTED: CPU detail: ${req.params.id}`);
+  const cpuId = req.params.id;
+
+  try {
+    const foundCPU = await cpu.findById(cpuId);
+
+    if (!foundCPU) {
+      // If CPU is not found, return an error or render a not found page
+      return res.status(404).send("CPU not found");
+    }
+
+    // Render the CPU detail view and pass the CPU data to it
+    res.render("cpu_detail", { title: "CPU Detail", cpu: foundCPU });
+  } catch (err) {
+    // Handle other errors that might occur during database interaction
+    res.status(500).send("Internal Server Error");
+  }
 });
 
 // Display CPU create form on GET.

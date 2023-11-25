@@ -1,0 +1,17 @@
+extends layout
+
+block content
+  h1= title
+
+  if cpu
+    div
+      h2 CPU Details
+      p Name: #{cpu.name}
+      p Brand: #{cpu.brand}
+      p Socket Type: #{cpu.socketType}
+      p Core Count: #{cpu.coreCount}
+      p Thread Count: #{cpu.threadCount}
+      p Frequency: #{cpu.frequency}
+      p Price: ₹#{cpu.price}
+  else
+    p CPU not found
