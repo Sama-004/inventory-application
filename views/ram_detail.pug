@@ -1,0 +1,16 @@
+extends layout
+
+block content
+  h1= title
+
+  if ram
+    div
+      h2 Power-Supply Specs
+      p Name: #{ram.name}
+      p Brand: #{ram.brand}
+      p Capacity: #{ram.capacity}
+      p Type: #{ram.type}
+      p Speed: #{ram.speed}
+      p Price: #{ram.price}      
+  else
+    p Motherboard not found

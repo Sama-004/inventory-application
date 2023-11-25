@@ -12,7 +12,18 @@ exports.ram_list = asyncHandler(async (req, res, next) => {
 
 // Display detail page for a specific Ram.
 exports.ram_detail = asyncHandler(async (req, res, next) => {
-  res.send(`NOT IMPLEMENTED: Ram detail: ${req.params.id}`);
+  const ramId = req.params.id;
+  try {
+    const ram = await Ram.findById(ramId);
+    if (!ram) {
+      return res.status(404).send("Ram not found");
+    }
+    res.render("ram_detail", {
+      ram,
+    });
+  } catch (err) {
+    res.status(500).send("Internal Server Error");
+  }
 });
 
 // Display Ram create form on GET.
