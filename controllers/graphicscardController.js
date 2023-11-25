@@ -15,7 +15,25 @@ exports.graphicscard_list = asyncHandler(async (req, res, next) => {
 
 // Display detail page for a specific gpu.
 exports.graphicscard_detail = asyncHandler(async (req, res, next) => {
-  res.send(`NOT IMPLEMENTED: Graphics Card detail: ${req.params.id}`);
+  const graphicsCardId = req.params.id;
+
+  try {
+    const graphicsCard = await GraphicsCard.findById(graphicsCardId);
+
+    if (!graphicsCard) {
+      // Handle case where graphics card with the given ID doesn't exist
+      return res.status(404).send("Graphics Card not found");
+    }
+
+    // Render the Graphics Card detail view and pass the Graphics Card data to it
+    res.render("graphicscard_detail", {
+      title: "Graphics Card Detail",
+      graphicsCard,
+    });
+  } catch (err) {
+    // Handle other errors that might occur during database interaction
+    res.status(500).send("Internal Server Error");
+  }
 });
 
 // Display gpu create form on GET.

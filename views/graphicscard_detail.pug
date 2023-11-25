@@ -1,0 +1,16 @@
+extends layout
+
+block content
+  h1= title
+
+  if graphicsCard
+    div
+      h2 Graphics Card Details
+      p Name: #{graphicsCard.name}
+      p Brand: #{graphicsCard.brand}
+      p Memory: #{graphicsCard.memory}
+      p Memory Type: #{graphicsCard.memoryType}
+      p Interface: #{graphicsCard.interface}
+      p Price: ₹#{graphicsCard.price}
+  else
+    p Graphics Card not found
