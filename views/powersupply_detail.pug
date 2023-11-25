@@ -1,0 +1,16 @@
+extends layout
+
+block content
+  h1= title
+
+  if psufound
+    div
+      h2 Power-Supply Specs
+      p Name: #{psufound.name}
+      p Brand: #{psufound.brand}
+      p Wattage: #{psufound.wattage}
+      p Efficiency Rating: #{psufound.efficiencyRating}
+      p Modular: #{psufound.formFactor}
+      p Price: #{psufound.price}      
+  else
+    p Motherboard not found

@@ -16,7 +16,18 @@ exports.powersupply_list = asyncHandler(async (req, res, next) => {
 
 // Display detail page for a specific PowerSupply.
 exports.powersupply_detail = asyncHandler(async (req, res, next) => {
-  res.send(`NOT IMPLEMENTED: PowerSupply detail: ${req.params.id}`);
+  const psuId = req.params.id;
+  try {
+    const psufound = await PowerSupply.findById(psuId);
+    if (!psufound) {
+      return res.status(404).send("Power Supply not found");
+    }
+    res.render("powersupply_detail", {
+      psufound,
+    });
+  } catch (err) {
+    res.status(500).send("Internal Server Error");
+  }
 });
 
 // Display PowerSupply create form on GET.
