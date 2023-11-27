@@ -1,6 +1,6 @@
 const Motherboard = require("../models/motherboard");
 const asyncHandler = require("express-async-handler");
-
+const { body, validationResult } = require("express-validator");
 // Display list of all Motherboard.
 exports.motherboard_list = asyncHandler(async (req, res, next) => {
   const allMotherboards = await Motherboard.find({}, "name brand price").exec();
@@ -27,14 +27,45 @@ exports.motherboard_detail = asyncHandler(async (req, res, next) => {
 });
 
 // Display Motherboard create form on GET.
-exports.motherboard_create_get = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: Motherboard create GET");
-});
+exports.motherboard_create_get = (req, res, next) => {
+  res.render("motherboard_form", { title: "Create Motherboard" });
+};
 
-// Handle Motherboard create on POST.
-exports.motherboard_create_post = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: Motherboard create POST");
-});
+// Handle motherboard create on POST.
+exports.motherboard_create_post = [
+  // Validate and sanitize fields.
+  body("name", "Motherboard name required")
+    .trim()
+    .isLength({ min: 1 })
+    .escape(),
+
+  // Process request after validation and sanitization.
+  asyncHandler(async (req, res, next) => {
+    const errors = validationResult(req);
+
+    // Create a motherboard object with escaped and trimmed data.
+    const motherboard = new Motherboard({ name: req.body.name });
+
+    if (!errors.isEmpty()) {
+      // There are errors. Render the form again with sanitized values/error messages.
+      res.render("motherboard_form", {
+        title: "Create Motherboard",
+        motherboard,
+        errors: errors.array(),
+      });
+      return;
+    } else {
+      try {
+        // Save the motherboard.
+        await motherboard.save();
+        // Redirect to the created motherboard's detail page.
+        res.redirect(motherboard.url);
+      } catch (err) {
+        return next(err);
+      }
+    }
+  }),
+];
 
 // Display Motherboard delete form on GET.
 exports.motherboard_delete_get = asyncHandler(async (req, res, next) => {

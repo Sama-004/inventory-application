@@ -80,7 +80,6 @@ exports.graphicscard_create_post = [
     }
   }),
 ];
-
 // Display gpu delete form on GET.
 exports.graphicscard_delete_get = asyncHandler(async (req, res, next) => {
   res.send("NOT IMPLEMENTED: Graphics Card delete GET");

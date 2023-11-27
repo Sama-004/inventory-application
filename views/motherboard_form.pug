@@ -1,0 +1,20 @@
+extends layout
+
+block content
+  h1= title
+
+  //- Display form errors if there are any
+  if errors
+    ul
+      each error in errors
+        li= error.msg
+
+  //- Motherboard creation form
+  form(method='POST' action='')
+    div.form-group
+      label(for='name') Motherboard Name:
+      input#name.form-control(type='text', placeholder='Enter Motherboard Name' name='name' required='true' value=(undefined === motherboard ? '' : motherboard.name))
+
+    //- Add other input fields for the form as needed
+
+    button.btn.btn-primary(type='submit') Create Motherboard
