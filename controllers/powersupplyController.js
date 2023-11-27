@@ -1,6 +1,6 @@
 const PowerSupply = require("../models/powersupply");
 const asyncHandler = require("express-async-handler");
-
+const { body, validationResult } = require("express-validator");
 // Display list of all PowerSupply.
 exports.powersupply_list = asyncHandler(async (req, res, next) => {
   const allPowerSupplies = await PowerSupply.find(
@@ -30,15 +30,46 @@ exports.powersupply_detail = asyncHandler(async (req, res, next) => {
   }
 });
 
-// Display PowerSupply create form on GET.
-exports.powersupply_create_get = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: PowerSupply create GET");
-});
+// Display power supply create form on GET.
+exports.powersupply_create_get = (req, res) => {
+  res.render("powersupply_form", { title: "Create Power Supply" });
+};
 
-// Handle PowerSupply create on POST.
-exports.powersupply_create_post = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: PowerSupply create POST");
-});
+// Handle power supply create on POST.
+exports.powersupply_create_post = [
+  // Validate and sanitize fields.
+  body("name", "Power supply name required")
+    .trim()
+    .isLength({ min: 1 })
+    .escape(),
+
+  // Process request after validation and sanitization.
+  asyncHandler(async (req, res, next) => {
+    const errors = validationResult(req);
+
+    // Create a power supply object with escaped and trimmed data.
+    const powersupply = new PowerSupply({ name: req.body.name });
+
+    if (!errors.isEmpty()) {
+      // There are errors. Render the form again with sanitized values/error messages.
+      res.render("powersupply_form", {
+        title: "Create Power Supply",
+        powersupply,
+        errors: errors.array(),
+      });
+      return;
+    } else {
+      try {
+        // Save the power supply.
+        await powersupply.save();
+        // Redirect to the created power supply's detail page.
+        res.redirect(powersupply.url);
+      } catch (err) {
+        return next(err);
+      }
+    }
+  }),
+];
 
 // Display PowerSupply delete form on GET.
 exports.powersupply_delete_get = asyncHandler(async (req, res, next) => {
