@@ -1,0 +1,32 @@
+extends layout
+
+block content
+  h1= title
+
+  form(method='POST' action='')
+    div.form-group
+      label(for='name') PSU Name:
+      input#name.form-control(type='text', placeholder='Enter PSU name' name='name' required='true')
+
+    div.form-group
+      label(for='wattage') Wattage:
+      input#wattage.form-control(type='number', placeholder='Enter wattage' name='wattage' required='true')
+
+    div.form-group
+      label(for='efficiencyRating') Efficiency Rating:
+      input#efficiencyRating.form-control(type='text', placeholder='Enter efficiency rating' name='efficiencyRating')
+
+    div.form-group
+      label(for='modular') Modular:
+      input#modular.form-control(type='checkbox' name='modular')
+
+    div.form-group
+      label(for='price') Price:
+      input#price.form-control(type='number', placeholder='Enter price' name='price' required='true')
+
+    button.btn.btn-primary(type='submit') Submit
+
+  if errors
+    ul
+      for error in errors
+        li!= error.msg
