@@ -1,20 +1,46 @@
 extends layout
 
 block content
-  h1= title
+  h1 Create Graphics Card
 
-  //- Display form errors if there are any
+    //- Display form errors if there are any
   if errors
     ul
       each error in errors
         li= error.msg
 
-  //- Graphics Card creation form
+
   form(method='POST' action='')
     div.form-group
-      label(for='name') Graphics Card Name:
-      input#name.form-control(type='text', placeholder='Enter Graphics Card Name' name='name' required='true' value=(undefined === graphicscard ? '' : graphicscard.name))
+      label(for='name') Name:
+      input#name.form-control(type='text', placeholder='Enter name' name='name' required='true')
 
-    //- Add other input fields for the form as needed
+    div.form-group
+      label(for='brand') Brand:
+      input#brand.form-control(type='text', placeholder='Enter brand' name='brand' required='true')
 
-    button.btn.btn-primary(type='submit') Create Graphics Card
+    div.form-group
+      label(for='memory') Memory:
+      input#memory.form-control(type='text', placeholder='Enter memory' name='memory')
+
+    //- div.form-group
+    //-   label(for='memoryType') Memory Type:
+    //-   input#memoryType.form-control(type='text', placeholder='Enter memory type' name='memoryType')
+
+    div.form-group
+      label(for='interface') Interface:
+      input#interface.form-control(type='text', placeholder='Enter interface' name='interface')
+
+    div.form-group
+      label(for='price') Price:
+      input#price.form-control(type='number', placeholder='Enter price' name='price' required='true')
+
+    button.btn.btn-primary(type='submit') Submit
+
+  if errors
+    ul
+      for error in errors
+        li!= error.msg
+
+
+    button.btn.btn-primary(type='submit') Create GPU
