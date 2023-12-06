@@ -36,6 +36,7 @@ exports.powersupply_create_get = (req, res) => {
 };
 
 // Handle power supply create on POST.
+// Handle power supply create on POST.
 exports.powersupply_create_post = [
   // Validate and sanitize fields.
   body("name", "Power supply name required")
@@ -47,26 +48,31 @@ exports.powersupply_create_post = [
   asyncHandler(async (req, res, next) => {
     const errors = validationResult(req);
 
-    // Create a power supply object with escaped and trimmed data.
-    const powersupply = new PowerSupply({ name: req.body.name });
-
     if (!errors.isEmpty()) {
       // There are errors. Render the form again with sanitized values/error messages.
-      res.render("powersupply_form", {
+      return res.render("powersupply_form", {
         title: "Create Power Supply",
-        powersupply,
+        powersupply: req.body,
         errors: errors.array(),
       });
-      return;
-    } else {
-      try {
-        // Save the power supply.
-        await powersupply.save();
-        // Redirect to the created power supply's detail page.
-        res.redirect(powersupply.url);
-      } catch (err) {
-        return next(err);
-      }
+    }
+
+    const { name, brand, wattage, efficiencyRating, modular, price } = req.body;
+    const newPSU = new PowerSupply({
+      name,
+      brand,
+      wattage,
+      efficiencyRating,
+      modular: modular === "on", // Check if checkbox was submitted
+      price,
+    });
+
+    try {
+      const savedPSU = await newPSU.save();
+      res.redirect(savedPSU.url);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send("Failed to create PSU");
     }
   }),
 ];

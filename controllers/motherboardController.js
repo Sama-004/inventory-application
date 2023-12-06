@@ -42,27 +42,29 @@ exports.motherboard_create_post = [
   // Process request after validation and sanitization.
   asyncHandler(async (req, res, next) => {
     const errors = validationResult(req);
-
-    // Create a motherboard object with escaped and trimmed data.
-    const motherboard = new Motherboard({ name: req.body.name });
-
     if (!errors.isEmpty()) {
       // There are errors. Render the form again with sanitized values/error messages.
       res.render("motherboard_form", {
         title: "Create Motherboard",
-        motherboard,
+        motherboard: req.body,
         errors: errors.array(),
       });
-      return;
-    } else {
-      try {
-        // Save the motherboard.
-        await motherboard.save();
-        // Redirect to the created motherboard's detail page.
-        res.redirect(motherboard.url);
-      } catch (err) {
-        return next(err);
-      }
+    }
+    const { name, brand, socketType, formFactor, price } = req.body;
+    const newMB = new Motherboard({
+      name,
+      brand,
+      socketType,
+      formFactor,
+      price,
+    });
+
+    try {
+      const savedMB = await newMB.save();
+      res.redirect(savedMB.url);
+    } catch (err) {
+      // Handle error if RAM creation fails
+      res.status(500).send("Failed to create Motherboard");
     }
   }),
 ];
