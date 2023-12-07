@@ -9,6 +9,10 @@ block content
       input#name.form-control(type='text', placeholder='Enter PSU name' name='name' required='true')
 
     div.form-group
+      label(for='brand') Brand:
+      input#wattage.form-control(type='text', placeholder='Enter Brand' name='brand' required='true')
+
+    div.form-group
       label(for='wattage') Wattage:
       input#wattage.form-control(type='number', placeholder='Enter wattage' name='wattage' required='true')
 
@@ -18,7 +22,8 @@ block content
 
     div.form-group
       label(for='modular') Modular:
-      input#modular.form-control(type='checkbox' name='modular')
+      input#efficiencyRating.form-control(type='text' name='modular')
+
 
     div.form-group
       label(for='price') Price:

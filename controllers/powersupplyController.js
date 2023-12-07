@@ -39,19 +39,18 @@ exports.powersupply_create_get = (req, res) => {
 // Handle power supply create on POST.
 exports.powersupply_create_post = [
   // Validate and sanitize fields.
-  body("name", "Power supply name required")
+  body("name", "PSU name must contain at least 3 characters")
     .trim()
-    .isLength({ min: 1 })
+    .isLength({ min: 3 })
     .escape(),
 
   // Process request after validation and sanitization.
   asyncHandler(async (req, res, next) => {
     const errors = validationResult(req);
-
     if (!errors.isEmpty()) {
       // There are errors. Render the form again with sanitized values/error messages.
       return res.render("powersupply_form", {
-        title: "Create Power Supply",
+        title: "Create PSU",
         powersupply: req.body,
         errors: errors.array(),
       });
@@ -63,7 +62,7 @@ exports.powersupply_create_post = [
       brand,
       wattage,
       efficiencyRating,
-      modular: modular === "on", // Check if checkbox was submitted
+      modular,
       price,
     });
 
@@ -71,7 +70,7 @@ exports.powersupply_create_post = [
       const savedPSU = await newPSU.save();
       res.redirect(savedPSU.url);
     } catch (err) {
-      console.error(err);
+      // Handle error if PSU creation fails
       res.status(500).send("Failed to create PSU");
     }
   }),

@@ -7,7 +7,7 @@ const powerSupplySchema = new Schema({
   brand: { type: String, required: true },
   wattage: { type: Number, required: true },
   efficiencyRating: String,
-  modular: { type: Boolean, required: true },
+  modular: { type: String },
   price: { type: Number, required: true },
   //image: String,
 });
