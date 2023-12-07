@@ -61,11 +61,12 @@ exports.graphicscard_create_post = [
       });
     }
 
-    const { name, brand, memory, interface, price } = req.body;
+    const { name, brand, memory, memoryType, interface, price } = req.body;
     const newGPU = new GraphicsCard({
       name,
       brand,
       memory,
+      memoryType,
       interface,
       price,
     });

@@ -23,9 +23,9 @@ block content
       label(for='memory') Memory:
       input#memory.form-control(type='text', placeholder='Enter memory' name='memory')
 
-    //- div.form-group
-    //-   label(for='memoryType') Memory Type:
-    //-   input#memoryType.form-control(type='text', placeholder='Enter memory type' name='memoryType')
+    div.form-group
+      label(for='memoryType') Memory Type:
+      input#memoryType.form-control(type='text', placeholder='Enter memory type' name='memoryType')
 
     div.form-group
       label(for='interface') Interface:
@@ -42,5 +42,3 @@ block content
       for error in errors
         li!= error.msg
 
-
-    button.btn.btn-primary(type='submit') Create GPU
