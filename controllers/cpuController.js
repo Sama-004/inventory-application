@@ -64,6 +64,7 @@ exports.cpu_create_get = (req, res, next) => {
 };
 
 exports.cpu_create_post = [
+  // Validate and sanitize fields.
   body("name", "CPU name must contain at least 3 characters")
     .trim()
     .isLength({ min: 3 })
@@ -71,40 +72,44 @@ exports.cpu_create_post = [
 
   // Process request after validation and sanitization.
   asyncHandler(async (req, res, next) => {
-    // Extract the validation errors from a request.
     const errors = validationResult(req);
-
-    // Create a CPU object with escaped and trimmed data.
-    const CPU = new cpu({ name: req.body.name });
     if (!errors.isEmpty()) {
       // There are errors. Render the form again with sanitized values/error messages.
-      res.render("cpu_form", {
+      return res.render("cpu_form", {
         title: "Create CPU",
-        CPU: CPU,
+        cpu: req.body,
         errors: errors.array(),
       });
-      return;
-    } else {
-      try {
-        // Check if CPU with the same name already exists.
-        const cpuExists = await cpu.findOne({ name: req.body.name }).exec();
-        if (cpuExists) {
-          // CPU exists, redirect to its detail page.
-          res.redirect(cpuExists.url);
-        } else {
-          // Save the new CPU.
-          await CPU.save();
-          // New CPU saved. Redirect to CPU detail page.
-          res.redirect(CPU.url);
-        }
-      } catch (err) {
-        // Handle error if saving fails.
-        res.status(500).send("Internal Server Error");
-      }
+    }
+
+    const {
+      name,
+      brand,
+      socketType,
+      coreCount,
+      threadCount,
+      frequency,
+      price,
+    } = req.body;
+    const newCPU = new cpu({
+      name,
+      brand,
+      socketType,
+      coreCount,
+      threadCount,
+      frequency,
+      price,
+    });
+
+    try {
+      const savedCPU = await newCPU.save();
+      res.redirect(savedCPU.url);
+    } catch (err) {
+      // Handle error if CPU creation fails
+      res.status(500).send("Failed to create CPU");
     }
   }),
 ];
-
 // Display CPU delete form on GET.
 exports.cpu_delete_get = asyncHandler(async (req, res, next) => {
   res.send("NOT IMPLEMENTED: CPU delete GET");
