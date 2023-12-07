@@ -1,0 +1,12 @@
+extends layout
+
+block content
+  h1= title
+
+  if graphicsCard
+    p Are you sure you want to delete #{graphicsCard.name}?
+    form(method='POST' action='')
+      input(type='submit' value='Delete')
+      a(href='/catalog/graphicscards') Cancel
+  else
+    p Graphics Card not found

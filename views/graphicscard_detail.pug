@@ -14,3 +14,8 @@ block content
       p Price: ₹#{graphicsCard.price}
   else
     p Graphics Card not found
+
+  //- a(href=`/catalog/graphicscard/${graphicsCard._id}/delete`) Delete
+  hr
+  p
+    a(href=`${graphicsCard.url}/delete`) Delete Graphics Card

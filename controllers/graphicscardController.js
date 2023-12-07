@@ -83,12 +83,43 @@ exports.graphicscard_create_post = [
 
 // Display gpu delete form on GET.
 exports.graphicscard_delete_get = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: Graphics Card delete GET");
+  // Get details of author and all their books (in parallel)
+  const graphicsCard = await GraphicsCard.findById(req.params.id).exec();
+
+  if (!graphicsCard) {
+    res.redirect("/catalog/graphicscards"); // Redirect to a graphics card list page or handle as needed
+    return;
+  }
+
+  res.render("graphicscard_delete", {
+    title: "Delete Graphics Card",
+    graphicsCard: graphicsCard,
+  });
 });
 
-// Handle gpu delete on POST.
+// Handle delete on POST for a specific GraphicsCard.
 exports.graphicscard_delete_post = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: Graphics Card delete POST");
+  try {
+    // Assuming GraphicsCard is the model for your graphics card
+    const graphicsCardId = req.params.id;
+
+    // Find the graphics card by ID and delete it
+    const deletedGraphicsCard = await GraphicsCard.findByIdAndDelete(
+      graphicsCardId
+    );
+
+    if (!deletedGraphicsCard) {
+      // Handle case where graphics card wasn't found
+      res.status(404).send("Graphics card not found");
+      return;
+    }
+
+    // Graphics card deleted successfully
+    res.redirect("/catalog/graphicscards"); // Redirect to the graphics card list
+  } catch (error) {
+    // Handle any error that occurred during the deletion process
+    res.status(500).send("Error deleting graphics card");
+  }
 });
 
 // Display gpu update form on GET.
