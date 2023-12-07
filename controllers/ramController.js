@@ -107,10 +107,57 @@ exports.ram_delete_post = asyncHandler(async (req, res, next) => {
 
 // Display Ram update form on GET.
 exports.ram_update_get = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: Ram update GET");
+  // Get ram for form.
+  const ram = await Promise.all([Ram.findById(req.params.id).exec()]);
+
+  res.render("ram_form", {
+    title: "Update Ram",
+    ram: ram,
+  });
 });
 
 // Handle Ram update on POST.
-exports.ram_update_post = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: Ram update POST");
-});
+
+exports.ram_update_post = [
+  body("name", "Name must not be empty.").trim().isLength({ min: 1 }).escape(),
+  body("brand", "Brand must not be empty.")
+    .trim()
+    .isLength({ min: 1 })
+    .escape(),
+  body("price", "Price must not be empty.")
+    .trim()
+    .isLength({ min: 1 })
+    .escape(),
+  // Add validation and sanitization for other RAM fields as needed.
+  // Process request after validation and sanitization.
+  asyncHandler(async (req, res, next) => {
+    // Extract the validation errors from a request.
+    const errors = validationResult(req);
+
+    // Create a RAM object with escaped/trimmed data and old id.
+    const ram = new Ram({
+      name: req.body.name,
+      brand: req.body.brand,
+      capacity: req.body.capacity,
+      type: req.body.type,
+      speed: req.body.speed,
+      price: req.body.price,
+      _id: req.params.id, // Ensure to assign the correct RAM ID.
+    });
+
+    if (!errors.isEmpty()) {
+      // There are errors. Render form again with sanitized values/error messages.
+      res.render("ram_form", {
+        title: "Update RAM",
+        ram: ram,
+        errors: errors.array(),
+      });
+      return;
+    } else {
+      // Data from form is valid. Update the record.
+      const updatedRAM = await Ram.findByIdAndUpdate(req.params.id, ram, {});
+      // Redirect to RAM detail page or appropriate URL.
+      res.redirect(updatedRAM.url);
+    }
+  }),
+];
