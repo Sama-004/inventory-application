@@ -110,14 +110,42 @@ exports.cpu_create_post = [
     }
   }),
 ];
-// Display CPU delete form on GET.
+
+// Display cpu delete form on GET.
 exports.cpu_delete_get = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: CPU delete GET");
+  // Get details of cpu
+  const CPU = await cpu.findById(req.params.id).exec();
+
+  if (!CPU) {
+    res.redirect("/catalog/cpus"); // Redirect to a cpu list page or handle as needed
+    return;
+  }
+
+  res.render("cpu_delete", {
+    title: "Delete Cpu ",
+    CPU: CPU,
+  });
 });
 
-// Handle CPU delete on POST.
+// Handle delete on POST for a Cpu.
 exports.cpu_delete_post = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: CPU delete POST");
+  const cpuId = req.params.id;
+  try {
+    // Find the CPU by ID and delete it
+    const deletedCpu = await cpu.findByIdAndDelete(cpuId);
+
+    if (!deletedCpu) {
+      // Handle case where cpu wasn't found
+      res.status(404).send("Cpu not found");
+      return;
+    }
+
+    //CPU deleted successfully
+    res.redirect("/catalog/cpus"); // Redirect to the Cpu list
+  } catch (error) {
+    // Handle any error that occurred during the deletion process
+    res.status(500).send("Error deleting CPU");
+  }
 });
 
 // Display CPU update form on GET.

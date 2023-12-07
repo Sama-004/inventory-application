@@ -13,5 +13,8 @@ block content
       p Thread Count: #{cpu.threadCount}
       p Frequency: #{cpu.frequency}
       p Price: ₹#{cpu.price}
+    hr
+    p
+      a(href=`/catalog/cpu/${cpu._id}/delete`) Delete CPU
   else
     p CPU not found

@@ -100,7 +100,6 @@ exports.graphicscard_delete_get = asyncHandler(async (req, res, next) => {
 // Handle delete on POST for a specific GraphicsCard.
 exports.graphicscard_delete_post = asyncHandler(async (req, res, next) => {
   try {
-    // Assuming GraphicsCard is the model for your graphics card
     const graphicsCardId = req.params.id;
 
     // Find the graphics card by ID and delete it

@@ -1,0 +1,12 @@
+extends layout
+
+block content
+  h1= title
+
+  if CPU
+    p Are you sure you want to delete #{CPU.name}?
+    form(method='POST', action=``)
+      input(type='submit', value='Delete')
+      a(href='/catalog/cpus') Cancel
+  else
+    p Cpu not found (on confirm delete page)

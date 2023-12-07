@@ -1,6 +1,7 @@
 const Ram = require("../models/ram");
 const asyncHandler = require("express-async-handler");
 const { body, validationResult } = require("express-validator");
+const ram = require("../models/ram");
 
 // Display list of all Rams.
 exports.ram_list = asyncHandler(async (req, res, next) => {
@@ -68,12 +69,40 @@ exports.ram_create_post = [
 
 // Display Ram delete form on GET.
 exports.ram_delete_get = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: Ram delete GET");
+  // Get details
+  const ram = await Ram.findById(req.params.id).exec();
+
+  if (!ram) {
+    res.redirect("/catalog/rams"); // Redirect to a Ram list page or handle as needed
+    return;
+  }
+
+  res.render("ram_delete", {
+    title: "Delete Ram",
+    ram: ram,
+  });
 });
 
 // Handle Ram delete on POST.
 exports.ram_delete_post = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: Ram delete POST");
+  try {
+    const ramid = req.params.id;
+
+    // Find the Ram by ID and delete it
+    const ram = await Ram.findByIdAndDelete(ramid);
+
+    if (!ram) {
+      // Handle case where Ram wasn't found
+      res.status(404).send("Ram not found");
+      return;
+    }
+
+    // Ram deleted successfully
+    res.redirect("/catalog/rams"); // Redirect to the Ram list
+  } catch (error) {
+    // Handle any error that occurred during the deletion process
+    res.status(500).send("Error deleting Ram");
+  }
 });
 
 // Display Ram update form on GET.

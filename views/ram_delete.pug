@@ -3,11 +3,11 @@ extends layout
 block content
   h1= title
 
-  if graphicsCard
-    p Are you sure you want to delete #{graphicsCard.name}?
+  if ram
+    p Are you sure you want to delete #{ram.name}?
     form(method='POST' action='')
       input(type='submit' value='Delete')
       | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      a(href='/catalog/graphicscards') Cancel
+      a(href='/catalog/rams') Cancel
   else
-    p Graphics Card not found
+    p Ram not found
