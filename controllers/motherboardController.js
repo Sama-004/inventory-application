@@ -71,12 +71,42 @@ exports.motherboard_create_post = [
 
 // Display Motherboard delete form on GET.
 exports.motherboard_delete_get = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: Motherboard delete GET");
+  // Get details of motherboard (in parallel)
+  const motherboard = await Motherboard.findById(req.params.id).exec();
+
+  if (!motherboard) {
+    res.redirect("/catalog/motherboards"); // Redirect to a gmotherboard list page or handle as needed
+    return;
+  }
+
+  res.render("motherboard_delete", {
+    title: "Delete Motherboard",
+    motherboard: motherboard,
+  });
 });
 
 // Handle Motherboard delete on POST.
 exports.motherboard_delete_post = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: Motherboard delete POST");
+  try {
+    const motherboardId = req.params.id;
+
+    // Find the Motherboard by ID and delete it
+    const deletedMotherboard = await Motherboard.findByIdAndDelete(
+      motherboardId
+    );
+
+    if (!deletedMotherboard) {
+      // Handle case where Motherboard wasn't found
+      res.status(404).send("Motherboard not found");
+      return;
+    }
+
+    // Motherboard deleted successfully
+    res.redirect("/catalog/motherboards"); // Redirect to the Motherboard list
+  } catch (error) {
+    // Handle any error that occurred during the deletion process
+    res.status(500).send("Error deleting motherboard");
+  }
 });
 
 // Display Motherboard update form on GET.

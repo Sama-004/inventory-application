@@ -1,0 +1,13 @@
+extends layout
+
+block content
+  h1= title
+
+  if motherboard
+    p Are you sure you want to delete #{motherboard.name}?
+    form(method='POST' action='')
+      input(type='submit' value='Delete')
+      | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      a(href='/catalog/motherboards') Cancel
+  else
+    p Motherboard not found

@@ -78,12 +78,39 @@ exports.powersupply_create_post = [
 
 // Display PowerSupply delete form on GET.
 exports.powersupply_delete_get = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: PowerSupply delete GET");
+  const psu = await PowerSupply.findById(req.params.id).exec();
+
+  if (!psu) {
+    res.redirect("/catalog/powersupplies"); // Redirect to a  power supply list page or handle as needed
+    return;
+  }
+
+  res.render("powersupply_delete", {
+    title: "Delete power supply",
+    psu: psu,
+  });
 });
 
 // Handle PowerSupply delete on POST.
 exports.powersupply_delete_post = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: PowerSupply delete POST");
+  try {
+    const psuId = req.params.id;
+
+    // Find the power supply by ID and delete it
+    const deletedPSU = await PowerSupply.findByIdAndDelete(psuId);
+
+    if (!deletedPSU) {
+      // Handle case where power supply wasn't found
+      res.status(404).send("Power Supplies not found");
+      return;
+    }
+
+    // power supply deleted successfully
+    res.redirect("/catalog/powersupplies"); // Redirect to the power supply list
+  } catch (error) {
+    // Handle any error that occurred during the deletion process
+    res.status(500).send("Error deleting power supply");
+  }
 });
 
 // Display PowerSupply update form on GET.

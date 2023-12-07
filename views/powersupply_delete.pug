@@ -1,0 +1,13 @@
+extends layout
+
+block content
+  h1= title
+
+  if psu
+    p Are you sure you want to delete #{psu.name}?
+    form(method='POST' action='')
+      input(type='submit' value='Delete')
+      | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      a(href='/catalog/powersupplies') Cancel
+  else
+    p Power Supply not found
