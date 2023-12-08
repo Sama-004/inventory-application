@@ -26,6 +26,17 @@ html(lang='en')
             a.nav-link(href='/catalog/powersupplies') Powersupply List 
           li.nav-item
             a.nav-link(href='/catalog/rams') Ram List
+          li.nav-item.dropdown
+            a.nav-link.dropdown-toggle(href='#', id='navbarDropdown', role='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
+              | Add
+            .dropdown-menu(aria-labelledby='navbarDropdown')
+              a.dropdown-item(href='/catalog/cpu/create') Create new CPU
+              a.dropdown-item(href='/catalog/graphicscard/create') Create new GPU
+              a.dropdown-item(href='/catalog/motherboard/create') Create new Motherboard
+              a.dropdown-item(href='/catalog/powersupply/create') Create new Power-Supply
+              a.dropdown-item(href='/catalog/ram/create') Create new Ram
+
+
 
     div(class='container-fluid mt-4')
       div(class='row')

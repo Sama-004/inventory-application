@@ -3,11 +3,12 @@ const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
-
+const multer = require("multer");
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
 const catalogRouter = require("./routes/catalog");
 
+const upload = multer({ dest: "uploads/" });
 const app = express();
 // Set up mongoose connection
 const mongoose = require("mongoose");
@@ -37,7 +38,6 @@ app.use("/catalog", catalogRouter);
 app.use(function (req, res, next) {
   next(createError(404));
 });
-
 // error handler
 app.use(function (err, req, res, next) {
   // set locals, only providing error in development

@@ -12,6 +12,8 @@ block content
       p Memory Type: #{graphicsCard.memoryType}
       p Interface: #{graphicsCard.interface}
       p Price: ₹#{graphicsCard.price}
+      img(src=graphicsCard.image, alt='No image', style='max-width: 200px;')
+      
   else
     p Graphics Card not found
 

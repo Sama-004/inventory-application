@@ -34,6 +34,12 @@ block content
     div.form-group
       label(for='price') Price:
       input#price.form-control(type='number', placeholder='Enter price' name='price' required='true')
+    
+  form(action="/profile", method="post", enctype="multipart/form-data")
+    div.form-group
+      label(for='image') Upload GPU Image:
+      input#image.form-control(type='file', name='image')
+
 
     button.btn.btn-primary(type='submit') Submit
 

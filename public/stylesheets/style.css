@@ -23,6 +23,10 @@ ul {
   transition: background-color 0.3s ease;
 }
 
+.navbar-nav li.nav-item {
+  margin-right: 50px; /* Adjust this value to increase or decrease the spacing */
+}
+
 body {
   background-color: lightblue;
   font-family: "Inter", sans-serif;
