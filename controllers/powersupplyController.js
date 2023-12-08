@@ -115,10 +115,60 @@ exports.powersupply_delete_post = asyncHandler(async (req, res, next) => {
 
 // Display PowerSupply update form on GET.
 exports.powersupply_update_get = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: PowerSupply update GET");
+  // Get psu for form.
+  const psu = await Promise.all([PowerSupply.findById(req.params.id).exec()]);
+
+  res.render("powersupply_form", {
+    title: "Update Power Supply",
+    psu: psu,
+  });
 });
 
 // Handle PowerSupply update on POST.
-exports.powersupply_update_post = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: PowerSupply update POST");
-});
+exports.powersupply_update_post = [
+  body("name", "Name must not be empty.").trim().isLength({ min: 1 }).escape(),
+  body("brand", "Brand must not be empty.")
+    .trim()
+    .isLength({ min: 1 })
+    .escape(),
+  body("price", "Price must not be empty.")
+    .trim()
+    .isLength({ min: 1 })
+    .escape(),
+  // Add validation and sanitization for other PSU fields as needed.
+  // Process request after validation and sanitization.
+  asyncHandler(async (req, res, next) => {
+    // Extract the validation errors from a request.
+    const errors = validationResult(req);
+
+    // Create a PSU object with escaped/trimmed data and old id.
+    const psu = new PowerSupply({
+      name: req.body.name,
+      brand: req.body.brand,
+      wattage: req.body.wattage,
+      efficiencyRating: req.body.efficiencyRating,
+      modular: req.body.modular,
+      price: req.body.price,
+      _id: req.params.id, // Ensure to assign the correct psu ID.
+    });
+
+    if (!errors.isEmpty()) {
+      // There are errors. Render form again with sanitized values/error messages.
+      res.render("powersupply_form", {
+        title: "Update PSU",
+        psu: psu,
+        errors: errors.array(),
+      });
+      return;
+    } else {
+      // Data from form is valid. Update the record.
+      const updatedPSU = await PowerSupply.findByIdAndUpdate(
+        req.params.id,
+        psu,
+        {}
+      );
+      // Redirect to PSU detail page or appropriate URL.
+      res.redirect(updatedPSU.url);
+    }
+  }),
+];

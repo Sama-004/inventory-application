@@ -121,12 +121,64 @@ exports.graphicscard_delete_post = asyncHandler(async (req, res, next) => {
   }
 });
 
-// Display gpu update form on GET.
 exports.graphicscard_update_get = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: Graphics Card update GET");
+  // Get graphicscard for form.
+  const graphicscard = await Promise.all([
+    GraphicsCard.findById(req.params.id).exec(),
+  ]);
+
+  res.render("graphicscard_form", {
+    title: "Update Graphics Card",
+    graphicscard: graphicscard,
+  });
 });
 
-// Handle gpu update on POST.
-exports.graphicscard_update_post = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: Graphics Card update POST");
-});
+// Handle graphicscard update on POST.
+
+exports.graphicscard_update_post = [
+  body("name", "Name must not be empty.").trim().isLength({ min: 1 }).escape(),
+  body("brand", "Brand must not be empty.")
+    .trim()
+    .isLength({ min: 1 })
+    .escape(),
+  body("price", "Price must not be empty.")
+    .trim()
+    .isLength({ min: 1 })
+    .escape(),
+  // Add validation and sanitization for other graphicscard fields as needed.
+  // Process request after validation and sanitization.
+  asyncHandler(async (req, res, next) => {
+    // Extract the validation errors from a request.
+    const errors = validationResult(req);
+
+    // Create a graphicscard object with escaped/trimmed data and old id.
+    const graphicscard = new GraphicsCard({
+      name: req.body.name,
+      brand: req.body.brand,
+      memory: req.body.memory,
+      memoryType: req.body.memoryType,
+      interface: req.body.interface,
+      price: req.body.price,
+      _id: req.params.id, // Ensure to assign the correct graphicscard ID.
+    });
+
+    if (!errors.isEmpty()) {
+      // There are errors. Render form again with sanitized values/error messages.
+      res.render("graphicscard_form", {
+        title: "Update Graphics Card",
+        graphicscard: graphicscard,
+        errors: errors.array(),
+      });
+      return;
+    } else {
+      // Data from form is valid. Update the record.
+      const updatedGPU = await GraphicsCard.findByIdAndUpdate(
+        req.params.id,
+        graphicscard,
+        {}
+      );
+      // Redirect to graphicscard detail page or appropriate URL.
+      res.redirect(updatedGPU.url);
+    }
+  }),
+];

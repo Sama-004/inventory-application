@@ -148,12 +148,59 @@ exports.cpu_delete_post = asyncHandler(async (req, res, next) => {
   }
 });
 
-// Display CPU update form on GET.
 exports.cpu_update_get = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: CPU update GET");
+  // Get cpu for form.
+  const CPU = await Promise.all([cpu.findById(req.params.id).exec()]);
+
+  res.render("cpu_form", {
+    title: "Update CPU",
+    CPU: CPU,
+  });
 });
 
-// Handle CPU update on POST.
-exports.cpu_update_post = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: CPU update POST");
-});
+// Handle cpu update on POST.
+
+exports.cpu_update_post = [
+  body("name", "Name must not be empty.").trim().isLength({ min: 1 }).escape(),
+  body("brand", "Brand must not be empty.")
+    .trim()
+    .isLength({ min: 1 })
+    .escape(),
+  body("price", "Price must not be empty.")
+    .trim()
+    .isLength({ min: 1 })
+    .escape(),
+  // Add validation and sanitization for other cpu fields as needed.
+  // Process request after validation and sanitization.
+  asyncHandler(async (req, res, next) => {
+    // Extract the validation errors from a request.
+    const errors = validationResult(req);
+
+    // Create a cpu object with escaped/trimmed data and old id.
+    const CPU = new cpu({
+      name: req.body.name,
+      brand: req.body.brand,
+      socketType: req.body.socketType,
+      coreCount: req.body.coreCount,
+      threadCount: req.body.threadCount,
+      frequency: req.body.frequency,
+      price: req.body.price,
+      _id: req.params.id, // Ensure to assign the correct cpu ID.
+    });
+
+    if (!errors.isEmpty()) {
+      // There are errors. Render form again with sanitized values/error messages.
+      res.render("cpu_form", {
+        title: "Update CPU",
+        CPU: CPU,
+        errors: errors.array(),
+      });
+      return;
+    } else {
+      // Data from form is valid. Update the record.
+      const updatedCPU = await cpu.findByIdAndUpdate(req.params.id, CPU, {});
+      // Redirect to graphicscard detail page or appropriate URL.
+      res.redirect(updatedCPU.url);
+    }
+  }),
+];
