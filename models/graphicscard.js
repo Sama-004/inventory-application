@@ -9,7 +9,7 @@ const graphicsCardSchema = new Schema({
   memoryType: String,
   interface: String,
   price: { type: Number, required: true },
-  image: { type: String },
+  image: { type: Schema.Types.ObjectId },
 });
 
 // Virtual for GPU's URL
