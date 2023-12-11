@@ -163,7 +163,6 @@ exports.graphicscard_update_post = [
       memoryType: req.body.memoryType,
       interface: req.body.interface,
       price: req.body.price,
-      image: req.body.image,
       _id: req.params.id, // Ensure to assign the correct graphicscard ID.
     });
 
