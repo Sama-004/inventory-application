@@ -3,7 +3,7 @@ extends layout
 block content
   h1= title
 
-  form(method='POST' action='')
+  form(method='POST' action='',enctype='multipart/form-data')
     div.form-group
       label(for='name') RAM Name:
       input#name.form-control(type='text', placeholder='Enter RAM name' name='name' required='true')
@@ -16,9 +16,9 @@ block content
       label(for='capacity') Capacity:
       input#capacity.form-control(type='text', placeholder='Enter capacity' name='capacity' required='true')
     
-    div.form-group
-      label(for='type') Type:
-      input#capacity.form-control(type='text', placeholder='Enter capacity' name='capacity' required='true')
+    //- div.form-group
+    //-   label(for='type') Type:
+    //-   input#capacity.form-control(type='text', placeholder='Enter capacity' name='capacity' required='true')
 
     div.form-group
       label(for='speed') Speed:
@@ -27,6 +27,10 @@ block content
     div.form-group
       label(for='price') Price:
       input#price.form-control(type='number', placeholder='Enter price' name='price' required='true')
+
+    div.form-group
+      label(for='picture') Upload RAM Image:
+      input#image.form-control(type='file', name='picture')
 
     button.btn.btn-primary(type='submit') Submit
 

@@ -91,6 +91,7 @@ router.get(
 // POST request to update GPU.
 router.post(
   "/graphicscard/:id/update",
+  upload.single("picture"),
   graphicsCard_controller.graphicscard_update_post
 );
 
@@ -194,7 +195,11 @@ router.get("/powersupplies", powerSupply_controller.powersupply_list);
 router.get("/ram/create", ram_controller.ram_create_get);
 
 // POST request for creating RAM.
-router.post("/ram/create", ram_controller.ram_create_post);
+router.post(
+  "/ram/create",
+  upload.single("picture"),
+  ram_controller.ram_create_post
+);
 
 // GET request to delete RAM.
 router.get("/ram/:id/delete", ram_controller.ram_delete_get);
@@ -206,7 +211,11 @@ router.post("/ram/:id/delete", ram_controller.ram_delete_post);
 router.get("/ram/:id/update", ram_controller.ram_update_get);
 
 // POST request to update RAM.
-router.post("/ram/:id/update", ram_controller.ram_update_post);
+router.post(
+  "/ram/:id/update",
+  // upload.single("picture"),
+  ram_controller.ram_update_post
+);
 
 // GET request for one RAM.
 router.get("/ram/:id", ram_controller.ram_detail);
