@@ -9,7 +9,7 @@ const powerSupplySchema = new Schema({
   efficiencyRating: String,
   modular: { type: String },
   price: { type: Number, required: true },
-  //image: String,
+  picture: String,
 });
 
 // Virtual for psu's URL

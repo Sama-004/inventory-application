@@ -54,7 +54,7 @@ exports.ram_create_post = [
       });
     }
 
-    const { name, brand, capacity, type, speed, price } = req.body;
+    const { name, brand, capacity, speed, price } = req.body;
     const newRAM = new Ram({
       name,
       brand,
@@ -147,7 +147,6 @@ exports.ram_update_post = [
       name: req.body.name,
       brand: req.body.brand,
       capacity: req.body.capacity,
-      // type: req.body.type,
       speed: req.body.speed,
       price: req.body.price,
       _id: req.params.id, // Ensure to assign the correct RAM ID.

@@ -156,6 +156,7 @@ router.get(
 // POST request for creating PowerSupply.
 router.post(
   "/powersupply/create",
+  upload.single("picture"),
   powerSupply_controller.powersupply_create_post
 );
 
@@ -180,6 +181,7 @@ router.get(
 // POST request to update PowerSupply.
 router.post(
   "/powersupply/:id/update",
+  upload.single("picture"),
   powerSupply_controller.powersupply_update_post
 );
 
@@ -213,7 +215,7 @@ router.get("/ram/:id/update", ram_controller.ram_update_get);
 // POST request to update RAM.
 router.post(
   "/ram/:id/update",
-  // upload.single("picture"),
+  upload.single("picture"),
   ram_controller.ram_update_post
 );
 

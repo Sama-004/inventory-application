@@ -47,6 +47,7 @@ exports.powersupply_create_post = [
   // Process request after validation and sanitization.
   asyncHandler(async (req, res, next) => {
     const errors = validationResult(req);
+    const cleanedPath = req.file.path;
     if (!errors.isEmpty()) {
       // There are errors. Render the form again with sanitized values/error messages.
       return res.render("powersupply_form", {
@@ -64,6 +65,7 @@ exports.powersupply_create_post = [
       efficiencyRating,
       modular,
       price,
+      picture: cleanedPath,
     });
 
     try {
