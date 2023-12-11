@@ -1,7 +1,7 @@
 const Ram = require("../models/ram");
 const asyncHandler = require("express-async-handler");
 const { body, validationResult } = require("express-validator");
-const ram = require("../models/ram");
+const express = require("express");
 
 // Display list of all Rams.
 exports.ram_list = asyncHandler(async (req, res, next) => {
@@ -44,7 +44,7 @@ exports.ram_create_post = [
 
   asyncHandler(async (req, res, next) => {
     const errors = validationResult(req);
-
+    const cleanedPath = req.file.path;
     if (!errors.isEmpty()) {
       // Handle errors here
       return res.render("ram_form", {
@@ -55,7 +55,15 @@ exports.ram_create_post = [
     }
 
     const { name, brand, capacity, speed, price } = req.body;
-    const newRAM = new Ram({ name, brand, capacity, speed, price });
+    const newRAM = new Ram({
+      name,
+      brand,
+      capacity,
+      // type,
+      speed,
+      price,
+      picture: cleanedPath,
+    });
 
     try {
       const savedRAM = await newRAM.save();
@@ -139,7 +147,6 @@ exports.ram_update_post = [
       name: req.body.name,
       brand: req.body.brand,
       capacity: req.body.capacity,
-      type: req.body.type,
       speed: req.body.speed,
       price: req.body.price,
       _id: req.params.id, // Ensure to assign the correct RAM ID.

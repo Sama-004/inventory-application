@@ -6,14 +6,15 @@ block content
   if ram
     div
       h2 Ram Specs
+      img(src=`/catalog/${ram.picture}`, alt=`${ram.name}` style='width: 500px; heights:300px;')
       p Name: #{ram.name}
       p Brand: #{ram.brand}
       p Capacity: #{ram.capacity}
-      p Type: #{ram.type}
+      //- p Type: #{ram.type}
       p Speed: #{ram.speed}
       p Price: #{ram.price}      
   else
-    p Motherboard not found
+    p Ram not found
 
   hr
   p

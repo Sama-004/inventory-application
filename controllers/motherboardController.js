@@ -1,6 +1,7 @@
 const Motherboard = require("../models/motherboard");
 const asyncHandler = require("express-async-handler");
 const { body, validationResult } = require("express-validator");
+
 // Display list of all Motherboard.
 exports.motherboard_list = asyncHandler(async (req, res, next) => {
   const allMotherboards = await Motherboard.find({}, "name brand price").exec();
@@ -42,6 +43,7 @@ exports.motherboard_create_post = [
   // Process request after validation and sanitization.
   asyncHandler(async (req, res, next) => {
     const errors = validationResult(req);
+    const cleanedPath = req.file.path;
     if (!errors.isEmpty()) {
       // There are errors. Render the form again with sanitized values/error messages.
       res.render("motherboard_form", {
@@ -57,6 +59,7 @@ exports.motherboard_create_post = [
       socketType,
       formFactor,
       price,
+      picture: cleanedPath,
     });
 
     try {

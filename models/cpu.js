@@ -10,7 +10,7 @@ const cpuSchema = new Schema({
   threadCount: Number,
   frequency: String,
   price: { type: Number, required: true },
-  //image: String,
+  picture: String,
 });
 
 // Virtual for CPU's URL

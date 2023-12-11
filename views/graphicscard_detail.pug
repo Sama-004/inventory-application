@@ -6,13 +6,16 @@ block content
   if graphicsCard
     div
       h2 Graphics Card Details
+      img(src=`/catalog/${graphicsCard.picture}`, alt=`${graphicsCard.name}` style='width: 500px; heights:300px;')
       p Name: #{graphicsCard.name}
       p Brand: #{graphicsCard.brand}
       p Memory: #{graphicsCard.memory}
       p Memory Type: #{graphicsCard.memoryType}
       p Interface: #{graphicsCard.interface}
       p Price: ₹#{graphicsCard.price}
-      img(src=graphicsCard.image, alt='No image', style='max-width: 200px;')
+      //- p Image: /catalog/#{graphicsCard.picture}
+      //- p Image: #{graphicsCard.picture}
+      //- img(src='/catalog/${graphicsCard.picture}' alt=`${graphicsCard.name}` style='width:100px;height:100px;')
       
   else
     p Graphics Card not found

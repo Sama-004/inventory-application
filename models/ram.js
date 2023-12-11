@@ -6,10 +6,9 @@ const ramSchema = new Schema({
   name: { type: String, required: true },
   brand: { type: String, required: true },
   capacity: String,
-  type: String,
-  speed: String,
+  speed: { type: String },
   price: { type: Number, required: true },
-  //image: String,
+  picture: { type: String },
 });
 
 // Virtual for RAM's URL

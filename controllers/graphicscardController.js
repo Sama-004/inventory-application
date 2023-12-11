@@ -1,6 +1,8 @@
 const GraphicsCard = require("../models/graphicscard");
 const asyncHandler = require("express-async-handler");
 const { body, validationResult } = require("express-validator");
+const express = require("express");
+
 // Display list of all BookInstances.
 exports.graphicscard_list = asyncHandler(async (req, res, next) => {
   const allGraphicsCards = await GraphicsCard.find(
@@ -52,6 +54,7 @@ exports.graphicscard_create_post = [
   // Process request after validation and sanitization.
   asyncHandler(async (req, res, next) => {
     const errors = validationResult(req);
+    const cleanedPath = req.file.path;
     if (!errors.isEmpty()) {
       // There are errors. Render the form again with sanitized values/error messages.
       return res.render("graphicscard_form", {
@@ -69,6 +72,7 @@ exports.graphicscard_create_post = [
       memoryType,
       interface,
       price,
+      picture: cleanedPath,
     });
 
     try {
@@ -159,6 +163,7 @@ exports.graphicscard_update_post = [
       memoryType: req.body.memoryType,
       interface: req.body.interface,
       price: req.body.price,
+      // picture: req.body.picture,
       _id: req.params.id, // Ensure to assign the correct graphicscard ID.
     });
 

@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
-
+const multer = require("multer");
+const path = require("path");
 // Require controller modules.
 const cpu_controller = require("../controllers/cpuController");
 const graphicsCard_controller = require("../controllers/graphicscardController");
@@ -8,15 +9,37 @@ const motherboard_controller = require("../controllers/motherboardController");
 const powerSupply_controller = require("../controllers/powersupplyController");
 const ram_controller = require("../controllers/ramController");
 
-/// CPU ROUTES ///
+// Configure Multer for file upload
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "uploads/"); // Destination folder for storing the images
+  },
+  filename: function (req, file, cb) {
+    cb(
+      null,
+      file.fieldname + "-" + Date.now() + path.extname(file.originalname)
+    );
+  },
+});
 
+const upload = multer({
+  storage: storage,
+  limits: {
+    fileSize: 1024 * 1024 * 5, // Limit file size to 5MB
+  },
+});
+/// CPU ROUTES ///
 // GET catalog home page.
 router.get("/", cpu_controller.index);
 // GET request for creating a CPU. NOTE This must come before routes that display CPU (uses id).
 router.get("/cpu/create", cpu_controller.cpu_create_get);
 
 // POST request for creating CPU.
-router.post("/cpu/create", cpu_controller.cpu_create_post);
+router.post(
+  "/cpu/create",
+  upload.single("picture"),
+  cpu_controller.cpu_create_post
+);
 
 // GET request to delete CPU.
 router.get("/cpu/:id/delete", cpu_controller.cpu_delete_get);
@@ -28,7 +51,11 @@ router.post("/cpu/:id/delete", cpu_controller.cpu_delete_post);
 router.get("/cpu/:id/update", cpu_controller.cpu_update_get);
 
 // POST request to update CPU.
-router.post("/cpu/:id/update", cpu_controller.cpu_update_post);
+router.post(
+  "/cpu/:id/update",
+  upload.single("picture"),
+  cpu_controller.cpu_update_post
+);
 
 // GET request for one CPU.
 router.get("/cpu/:id", cpu_controller.cpu_detail);
@@ -47,6 +74,7 @@ router.get(
 // POST request for creating GPU.
 router.post(
   "/graphicscard/create",
+  upload.single("picture"),
   graphicsCard_controller.graphicscard_create_post
 );
 
@@ -71,6 +99,7 @@ router.get(
 // POST request to update GPU.
 router.post(
   "/graphicscard/:id/update",
+  upload.single("picture"),
   graphicsCard_controller.graphicscard_update_post
 );
 
@@ -91,6 +120,7 @@ router.get(
 //POST request for creating Motherboard.
 router.post(
   "/motherboard/create",
+  upload.single("picture"),
   motherboard_controller.motherboard_create_post
 );
 
@@ -115,6 +145,7 @@ router.get(
 // POST request to update Motherboard.
 router.post(
   "/motherboard/:id/update",
+  upload.single("picture"),
   motherboard_controller.motherboard_update_post
 );
 
@@ -135,6 +166,7 @@ router.get(
 // POST request for creating PowerSupply.
 router.post(
   "/powersupply/create",
+  upload.single("picture"),
   powerSupply_controller.powersupply_create_post
 );
 
@@ -159,6 +191,7 @@ router.get(
 // POST request to update PowerSupply.
 router.post(
   "/powersupply/:id/update",
+  upload.single("picture"),
   powerSupply_controller.powersupply_update_post
 );
 
@@ -174,7 +207,11 @@ router.get("/powersupplies", powerSupply_controller.powersupply_list);
 router.get("/ram/create", ram_controller.ram_create_get);
 
 // POST request for creating RAM.
-router.post("/ram/create", ram_controller.ram_create_post);
+router.post(
+  "/ram/create",
+  upload.single("picture"),
+  ram_controller.ram_create_post
+);
 
 // GET request to delete RAM.
 router.get("/ram/:id/delete", ram_controller.ram_delete_get);
@@ -186,7 +223,11 @@ router.post("/ram/:id/delete", ram_controller.ram_delete_post);
 router.get("/ram/:id/update", ram_controller.ram_update_get);
 
 // POST request to update RAM.
-router.post("/ram/:id/update", ram_controller.ram_update_post);
+router.post(
+  "/ram/:id/update",
+  upload.single("picture"),
+  ram_controller.ram_update_post
+);
 
 // GET request for one RAM.
 router.get("/ram/:id", ram_controller.ram_detail);

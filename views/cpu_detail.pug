@@ -6,6 +6,7 @@ block content
   if cpu
     div
       h2 CPU Details
+      img(src=`/catalog/${cpu.picture}`, alt=`${cpu.name}` style='width: 500px; heights:300px;')
       p Name: #{cpu.name}
       p Brand: #{cpu.brand}
       p Socket Type: #{cpu.socketType}
