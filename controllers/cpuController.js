@@ -73,6 +73,7 @@ exports.cpu_create_post = [
   // Process request after validation and sanitization.
   asyncHandler(async (req, res, next) => {
     const errors = validationResult(req);
+    const cleanedPath = req.file.path;
     if (!errors.isEmpty()) {
       // There are errors. Render the form again with sanitized values/error messages.
       return res.render("cpu_form", {
@@ -99,6 +100,7 @@ exports.cpu_create_post = [
       threadCount,
       frequency,
       price,
+      picture: cleanedPath,
     });
 
     try {

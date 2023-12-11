@@ -35,7 +35,11 @@ router.get("/", cpu_controller.index);
 router.get("/cpu/create", cpu_controller.cpu_create_get);
 
 // POST request for creating CPU.
-router.post("/cpu/create", cpu_controller.cpu_create_post);
+router.post(
+  "/cpu/create",
+  upload.single("picture"),
+  cpu_controller.cpu_create_post
+);
 
 // GET request to delete CPU.
 router.get("/cpu/:id/delete", cpu_controller.cpu_delete_get);
@@ -47,7 +51,11 @@ router.post("/cpu/:id/delete", cpu_controller.cpu_delete_post);
 router.get("/cpu/:id/update", cpu_controller.cpu_update_get);
 
 // POST request to update CPU.
-router.post("/cpu/:id/update", cpu_controller.cpu_update_post);
+router.post(
+  "/cpu/:id/update",
+  upload.single("picture"),
+  cpu_controller.cpu_update_post
+);
 
 // GET request for one CPU.
 router.get("/cpu/:id", cpu_controller.cpu_detail);
