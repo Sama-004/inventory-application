@@ -1,35 +1,7 @@
 const GraphicsCard = require("../models/graphicscard");
 const asyncHandler = require("express-async-handler");
 const { body, validationResult } = require("express-validator");
-const multer = require("multer");
-const path = require("path");
-
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "uploads/"); // Specify the folder where the images will be stored
-  },
-  filename: function (req, file, cb) {
-    cb(
-      null,
-      file.fieldname + "-" + Date.now() + path.extname(file.originalname)
-    ); // Rename the file to avoid conflicts
-  },
-});
-
-const upload = multer({
-  storage: storage,
-  limits: {
-    fileSize: 1024 * 1024 * 5, // Limit file size to 5MB (adjust as needed)
-  },
-  fileFilter: function (req, file, cb) {
-    // Add logic to allow only specific file types (e.g., images)
-    if (file.mimetype.startsWith("image/")) {
-      cb(null, true);
-    } else {
-      cb(new Error("File type not supported"), false);
-    }
-  },
-}).single("image"); // 'image' should match the name attribute in your form input
+const express = require("express");
 
 // Display list of all BookInstances.
 exports.graphicscard_list = asyncHandler(async (req, res, next) => {
@@ -73,51 +45,43 @@ exports.graphicscard_create_get = (req, res, next) => {
 
 // Handle gpu create on POST.
 exports.graphicscard_create_post = [
-  // Add middleware functions for form validation and sanitization using express-validator
-  // ...
+  // Validate and sanitize fields.
+  body("name", "GPU name must contain at least 3 characters")
+    .trim()
+    .isLength({ min: 3 })
+    .escape(),
 
   // Process request after validation and sanitization.
   asyncHandler(async (req, res, next) => {
-    upload(req, res, async (err) => {
-      if (err) {
-        // Handle any multer-related errors here
-        return res.status(400).send("Error uploading image.");
-      }
-
-      if (!req.file) {
-        return res.status(400).send("No file uploaded.");
-      }
-
-      const errors = validationResult(req);
-      if (!errors.isEmpty()) {
-        // There are errors. Render the form again with sanitized values/error messages.
-        return res.render("graphicscard_form", {
-          title: "Create GPU",
-          graphicscard: req.body,
-          errors: errors.array(),
-        });
-      }
-
-      // If validation succeeds and the image is uploaded, create the GPU
-      const { name, brand, memory, memoryType, interface, price } = req.body;
-      const newGPU = new GraphicsCard({
-        name,
-        brand,
-        memory,
-        memoryType,
-        interface,
-        price,
-        imagePath: req.file.path, // Save the image path to the database
+    const errors = validationResult(req);
+    const cleanedPath = req.file.path;
+    if (!errors.isEmpty()) {
+      // There are errors. Render the form again with sanitized values/error messages.
+      return res.render("graphicscard_form", {
+        title: "Create GPU",
+        graphicscard: req.body,
+        errors: errors.array(),
       });
+    }
 
-      try {
-        const savedGPU = await newGPU.save();
-        res.redirect(savedGPU.url);
-      } catch (err) {
-        // Handle error if GPU creation fails
-        res.status(500).send("Failed to create GPU");
-      }
+    const { name, brand, memory, memoryType, interface, price } = req.body;
+    const newGPU = new GraphicsCard({
+      name,
+      brand,
+      memory,
+      memoryType,
+      interface,
+      price,
+      picture: cleanedPath,
     });
+
+    try {
+      const savedGPU = await newGPU.save();
+      res.redirect(savedGPU.url);
+    } catch (err) {
+      // Handle error if GPU creation fails
+      res.status(500).send("Failed to create GPU");
+    }
   }),
 ];
 
@@ -199,6 +163,7 @@ exports.graphicscard_update_post = [
       memoryType: req.body.memoryType,
       interface: req.body.interface,
       price: req.body.price,
+      image: req.body.image,
       _id: req.params.id, // Ensure to assign the correct graphicscard ID.
     });
 

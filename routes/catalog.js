@@ -1,8 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const multer = require("multer");
-const storage = multer.memoryStorage();
-const upload = multer({ storage });
+const path = require("path");
 // Require controller modules.
 const cpu_controller = require("../controllers/cpuController");
 const graphicsCard_controller = require("../controllers/graphicscardController");
@@ -10,28 +9,26 @@ const motherboard_controller = require("../controllers/motherboardController");
 const powerSupply_controller = require("../controllers/powersupplyController");
 const ram_controller = require("../controllers/ramController");
 
-/// CPU ROUTES ///
-router.post("/upload", upload.single("file"), async (req, res) => {
-  try {
-    const gfs = new Grid(mongoose.connection.db, mongoose.mongo);
-    const writeStream = gfs.createWriteStream({
-      filename: req.file.originalname,
-      mode: "w",
-      content_type: req.file.mimetype,
-    });
-    fs.createReadStream(req.file.path).pipe(writeStream);
-    writeStream.on("close", (file) => {
-      fs.unlink(req.file.path, (err) => {
-        if (err) throw err;
-        return res.json({ file });
-      });
-    });
-  } catch (err) {
-    return res
-      .status(400)
-      .json({ message: "Error uploading file", error: err });
-  }
+// Configure Multer for file upload
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "uploads/"); // Destination folder for storing the images
+  },
+  filename: function (req, file, cb) {
+    cb(
+      null,
+      file.fieldname + "-" + Date.now() + path.extname(file.originalname)
+    );
+  },
 });
+
+const upload = multer({
+  storage: storage,
+  limits: {
+    fileSize: 1024 * 1024 * 5, // Limit file size to 5MB
+  },
+});
+/// CPU ROUTES ///
 // GET catalog home page.
 router.get("/", cpu_controller.index);
 // GET request for creating a CPU. NOTE This must come before routes that display CPU (uses id).
@@ -69,6 +66,7 @@ router.get(
 // POST request for creating GPU.
 router.post(
   "/graphicscard/create",
+  upload.single("picture"),
   graphicsCard_controller.graphicscard_create_post
 );
 
