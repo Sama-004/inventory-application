@@ -112,6 +112,7 @@ router.get(
 //POST request for creating Motherboard.
 router.post(
   "/motherboard/create",
+  upload.single("picture"),
   motherboard_controller.motherboard_create_post
 );
 
@@ -136,6 +137,7 @@ router.get(
 // POST request to update Motherboard.
 router.post(
   "/motherboard/:id/update",
+  upload.single("picture"),
   motherboard_controller.motherboard_update_post
 );
 

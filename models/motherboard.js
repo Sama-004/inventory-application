@@ -9,7 +9,7 @@ const motherboardSchema = new Schema({
   //supportedCPUs: [String],
   formFactor: String,
   price: { type: Number, required: true },
-  //image: String,
+  picture: String,
 });
 
 // Virtual for motherboard's URL
