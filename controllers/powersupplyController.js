@@ -142,7 +142,7 @@ exports.powersupply_update_post = [
   asyncHandler(async (req, res, next) => {
     // Extract the validation errors from a request.
     const errors = validationResult(req);
-
+    const cleanedPath = req.file.path;
     // Create a PSU object with escaped/trimmed data and old id.
     const psu = new PowerSupply({
       name: req.body.name,
@@ -151,6 +151,7 @@ exports.powersupply_update_post = [
       efficiencyRating: req.body.efficiencyRating,
       modular: req.body.modular,
       price: req.body.price,
+      picture: cleanedPath,
       _id: req.params.id, // Ensure to assign the correct psu ID.
     });
 

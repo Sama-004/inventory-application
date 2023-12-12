@@ -154,7 +154,7 @@ exports.graphicscard_update_post = [
   asyncHandler(async (req, res, next) => {
     // Extract the validation errors from a request.
     const errors = validationResult(req);
-
+    const cleanedPath = req.file.path;
     // Create a graphicscard object with escaped/trimmed data and old id.
     const graphicscard = new GraphicsCard({
       name: req.body.name,
@@ -163,7 +163,7 @@ exports.graphicscard_update_post = [
       memoryType: req.body.memoryType,
       interface: req.body.interface,
       price: req.body.price,
-      // picture: req.body.picture,
+      picture: cleanedPath,
       _id: req.params.id, // Ensure to assign the correct graphicscard ID.
     });
 

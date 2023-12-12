@@ -142,7 +142,7 @@ exports.motherboard_update_post = [
   asyncHandler(async (req, res, next) => {
     // Extract the validation errors from a request.
     const errors = validationResult(req);
-
+    const cleanedPath = req.file.path;
     // Create a motherboard object with escaped/trimmed data and old id.
     const motherboard = new Motherboard({
       name: req.body.name,
@@ -150,6 +150,7 @@ exports.motherboard_update_post = [
       socketType: req.body.socketType,
       formFactor: req.body.formFactor,
       price: req.body.price,
+      picture: cleanedPath,
       _id: req.params.id, // Ensure to assign the correct motherboard ID.
     });
 

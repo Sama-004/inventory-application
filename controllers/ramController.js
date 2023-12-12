@@ -141,7 +141,7 @@ exports.ram_update_post = [
   asyncHandler(async (req, res, next) => {
     // Extract the validation errors from a request.
     const errors = validationResult(req);
-
+    const cleanedPath = req.file.path;
     // Create a RAM object with escaped/trimmed data and old id.
     const ram = new Ram({
       name: req.body.name,
@@ -149,6 +149,7 @@ exports.ram_update_post = [
       capacity: req.body.capacity,
       speed: req.body.speed,
       price: req.body.price,
+      picture: cleanedPath,
       _id: req.params.id, // Ensure to assign the correct RAM ID.
     });
 
