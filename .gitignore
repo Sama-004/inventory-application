@@ -2,3 +2,4 @@ node_modules/
 text.txt
 plan.txt
 uploads/
+.env

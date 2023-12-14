@@ -1,4 +1,7 @@
-const createError = require("http-errors");
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config();
+}
+const dotenv = require("dotenv");
 const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
@@ -10,8 +13,7 @@ const app = express();
 // Set up mongoose connection
 const mongoose = require("mongoose");
 mongoose.set("strictQuery", false);
-const mongoDB =
-  "mongodb+srv://sama004:epicfailxdd2023@inventory-app.xv3glwb.mongodb.net/?retryWrites=true&w=majority";
+const mongoDB = process.env.MONGODB_URL;
 
 main().catch((err) => console.log(err));
 async function main() {
